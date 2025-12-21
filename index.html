@@ -3,20 +3,145 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Student Task & Schedule Manager</title>
+  <title data-i18n="app.title">Student Task Manager</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <header>
-    <h1 id="app-title">Student Task & Schedule Manager</h1>
-    <div id="lang-switcher" class="lang-switcher"></div>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <h1 id="app-title" data-i18n="app.title">Student Task Manager</h1>
+
+      <div class="controls">
+        <nav id="lang-switcher" class="lang-switcher" aria-label="Language switcher">
+          <!-- language buttons: data-i18n provides label text -->
+          <button type="button" class="lang-btn" data-lang="en" data-i18n="lang.en" aria-pressed="false">EN</button>
+          <button type="button" class="lang-btn" data-lang="uz" data-i18n="lang.uz" aria-pressed="false">UZ</button>
+          <button type="button" class="lang-btn" data-lang="ja" data-i18n="lang.ja" aria-pressed="false">JP</button>
+        </nav>
+
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section id="subjects-section" class="panel"></section>
-    <section id="tasks-section" class="panel"></section>
-    <section id="schedule-section" class="panel"></section>
+  <main id="main-content">
+
+    <!-- Dashboard / Summary -->
+    <section id="dashboard" class="panel" aria-labelledby="dashboard-title">
+      <h2 id="dashboard-title" data-i18n="dashboard.title">Dashboard</h2>
+      <div class="summary" role="list">
+        <div id="summary-subjects" class="summary-item" role="listitem">
+          <h3 data-i18n="summary.subjects">Total Subjects</h3>
+          <p id="summary-subjects-count" class="summary-value">0</p>
+        </div>
+        <div id="summary-pending" class="summary-item" role="listitem">
+          <h3 data-i18n="summary.pending">Pending Tasks</h3>
+          <p id="summary-pending-count" class="summary-value">0</p>
+        </div>
+        <div id="summary-completed" class="summary-item" role="listitem">
+          <h3 data-i18n="summary.completed">Completed Tasks</h3>
+          <p id="summary-completed-count" class="summary-value">0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subject Management -->
+    <section id="subjects-section" class="panel" aria-labelledby="subjects-title">
+      <h2 id="subjects-title" data-i18n="section.subjects">Subjects</h2>
+
+      <form id="subject-form" aria-labelledby="subjects-title" novalidate>
+        <fieldset>
+          <label for="subject-name" data-i18n="subject.name">Subject name</label>
+          <input type="text" id="subject-name" name="subjectName" placeholder="" required>
+        </fieldset>
+        <fieldset>
+          <label for="subject-color" data-i18n="subject.color">Color</label>
+          <input type="color" id="subject-color" name="subjectColor" value="#3498db">
+        </fieldset>
+        <button type="submit" id="add-subject" class="btn" data-i18n="subject.create">Add Subject</button>
+      </form>
+
+      <div id="subject-list" class="list" aria-live="polite" aria-label="List of subjects">
+        <!-- Subject items will be injected here -->
+      </div>
+    </section>
+
+    <!-- Task Management -->
+    <section id="tasks-section" class="panel" aria-labelledby="tasks-title">
+      <h2 id="tasks-title" data-i18n="section.tasks">Tasks</h2>
+
+      <form id="task-form" aria-labelledby="tasks-title" novalidate>
+        <fieldset>
+          <label for="task-title" data-i18n="task.title">Title</label>
+          <input type="text" id="task-title" name="taskTitle" required>
+        </fieldset>
+        <fieldset>
+          <label for="task-subject" data-i18n="task.subject">Subject</label>
+          <select id="task-subject" name="taskSubject" required>
+            <option value="" disabled selected data-i18n="select.subject">Select subject</option>
+            <!-- options populated by JS -->
+          </select>
+        </fieldset>
+        <fieldset>
+          <label for="task-deadline" data-i18n="task.deadline">Deadline</label>
+          <input type="date" id="task-deadline" name="taskDeadline" required>
+        </fieldset>
+        <button type="submit" id="add-task" class="btn" data-i18n="task.create">Add Task</button>
+      </form>
+
+      <div id="task-list" class="list" aria-live="polite" aria-label="List of tasks">
+        <!-- Task items will be injected here -->
+      </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule-section" class="panel" aria-labelledby="schedule-title">
+      <h2 id="schedule-title" data-i18n="section.schedule">Weekly Schedule</h2>
+
+      <!-- Week navigation: Prev / This week / Next -->
+      <div class="schedule-nav center" role="toolbar" aria-label="Week navigation">
+        <button type="button" id="week-prev" class="btn secondary" aria-label="Previous week" data-i18n="schedule.prev">Prev</button>
+        <button type="button" id="week-today" class="btn" aria-label="This week" data-i18n="schedule.this_week">This week</button>
+        <button type="button" id="week-next" class="btn secondary" aria-label="Next week" data-i18n="schedule.next">Next</button>
+        <div id="week-range" class="small" style="margin-left:0.75rem;opacity:0.85"></div>
+      </div>
+
+      <div id="week-schedule" class="schedule-grid" role="grid" aria-label="Weekly schedule (Monday to Sunday)">
+        <div class="day-column" id="day-mon" data-day="mon" role="gridcell" aria-labelledby="day-mon-label">
+          <h3 id="day-mon-label" data-i18n="day.mon">Mon</h3>
+          <div class="day-tasks" id="day-mon-tasks" aria-live="polite"></div>
+        </div>
+        <div class="day-column" id="day-tue" data-day="tue" role="gridcell" aria-labelledby="day-tue-label">
+          <h3 id="day-tue-label" data-i18n="day.tue">Tue</h3>
+          <div class="day-tasks" id="day-tue-tasks" aria-live="polite"></div>
+        </div>
+        <div class="day-column" id="day-wed" data-day="wed" role="gridcell" aria-labelledby="day-wed-label">
+          <h3 id="day-wed-label" data-i18n="day.wed">Wed</h3>
+          <div class="day-tasks" id="day-wed-tasks" aria-live="polite"></div>
+        </div>
+        <div class="day-column" id="day-thu" data-day="thu" role="gridcell" aria-labelledby="day-thu-label">
+          <h3 id="day-thu-label" data-i18n="day.thu">Thu</h3>
+          <div class="day-tasks" id="day-thu-tasks" aria-live="polite"></div>
+        </div>
+        <div class="day-column" id="day-fri" data-day="fri" role="gridcell" aria-labelledby="day-fri-label">
+          <h3 id="day-fri-label" data-i18n="day.fri">Fri</h3>
+          <div class="day-tasks" id="day-fri-tasks" aria-live="polite"></div>
+        </div>
+        <div class="day-column" id="day-sat" data-day="sat" role="gridcell" aria-labelledby="day-sat-label">
+          <h3 id="day-sat-label" data-i18n="day.sat">Sat</h3>
+          <div class="day-tasks" id="day-sat-tasks" aria-live="polite"></div>
+        </div>
+        <div class="day-column" id="day-sun" data-day="sun" role="gridcell" aria-labelledby="day-sun-label">
+          <h3 id="day-sun-label" data-i18n="day.sun">Sun</h3>
+          <div class="day-tasks" id="day-sun-tasks" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <footer id="site-footer" class="site-footer" role="contentinfo">
+    <p>&copy; <span id="footer-year">2025</span> <span data-i18n="app.title">Student Task Manager</span> <span data-i18n="footer.note">— Academic project.</span></p>
+  </footer>
 
   <!-- Core scripts (no bundler) -->
   <script src="assets/js/i18n.js"></script>

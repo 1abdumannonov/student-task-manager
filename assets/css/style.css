@@ -1,15 +1,171 @@
-/* Basic styles for Student Task & Schedule Manager (starter) */
+/*
+  Student Task & Schedule Manager — Neo-Modern Dark Redesign
+  --------------------------------------------------------
+  Objectives:
+  - Fixed premium dark style (no theme switching)
+  - Orange accent (#ff7a00) and soft neuromorphism shadows
+  - Mobile-inspired, centered layout, rounded cards, pill buttons
+*/
 :root{
-  --bg:#f5f6fa;
-  --card:#ffffff;
-  --muted:#6b7280;
-  --accent:#2563eb;
+  /* Dark-first palette (fixed) */
+  --bg:#0f0f0f;               /* page background (very dark) */
+  --surface:#1b1b1b;          /* card surface */
+  --card-contrast:#242424;    /* slightly lighter card tone */
+  --muted:#9aa0a6;            /* secondary text */
+  --text:#f7f7f7;             /* primary text */
+  --accent:#ff7a00;           /* vivid orange */
+  --accent-weak:rgba(255,122,0,0.12);
+  --danger:#ff5c4d;
+  --success:#2ecc71;
+  --radius:18px;
+
+  --gap-sm:0.5rem;
+  --gap:1rem;
+  --gap-lg:1.6rem;
+  --container-max:980px; /* mobile-app feel */
+  --card-padding:1.1rem;
+  --soft-shadow:0 10px 30px rgba(2,6,12,0.6);
+  --inset-shadow:inset 0 2px 8px rgba(0,0,0,0.6);
 }
+
+/* Reset & base */
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Segoe UI, Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial}
-body{background:var(--bg);color:#111}
-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;background:var(--card);box-shadow:0 1px 2px rgba(16,24,40,0.05)}
-.panel{padding:1rem;margin:1rem;background:var(--card);border-radius:6px;box-shadow:0 1px 2px rgba(16,24,40,0.04)}
-.lang-switcher select{padding:0.35rem;border-radius:4px;border:1px solid #ddd}
-/* Utility */
-.small{font-size:0.9rem;color:var(--muted)}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;height:auto;display:block}
+
+/* Centered container - mobile-inspired */
+.container{
+  width:100%;
+  padding:0 1rem;
+  margin:0 auto;
+  max-width:var(--container-max);
+}
+main#main-content{padding:1.25rem 0 3rem}
+
+/* Header */
+.site-header{background:transparent;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0}
+#app-title{font-weight:800;font-size:1.1rem;margin:0;color:var(--text);letter-spacing:0.2px}
+.controls{display:flex;gap:0.5rem;align-items:center}
+.lang-switcher .lang-btn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:0.45rem 0.65rem;border-radius:12px;cursor:pointer;font-weight:700;color:var(--muted);font-size:0.85rem}
+.lang-switcher .lang-btn[aria-pressed="true"]{background:linear-gradient(90deg,var(--accent-weak),transparent);color:var(--accent);box-shadow:0 6px 20px rgba(255,122,0,0.06)}
+
+/* Footer */
+.site-footer{padding:1.25rem 0;text-align:center;color:var(--muted);font-size:0.85rem}
+
+/* Panels / Cards */
+.panel{
+  background:linear-gradient(180deg,var(--surface),var(--card-contrast));
+  border-radius:calc(var(--radius) + 4px);
+  padding:calc(var(--card-padding) + 0.3rem);
+  box-shadow:var(--soft-shadow);
+  margin-bottom:1.25rem;
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+/* Dashboard summary - compact, large numbers */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);align-items:stretch}
+.summary-item{padding:0.85rem;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.012),transparent);display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.summary-item h3{margin:0;font-size:0.82rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.6px}
+.summary-value{margin-top:0.35rem;font-weight:800;font-size:1.6rem;color:var(--text)}
+
+/* Forms - inputs styled as mobile app fields */
+form{display:flex;flex-direction:column;gap:0.75rem}
+label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:0.25rem}
+input[type="text"], input[type="date"], input[type="color"], select{
+  width:100%;padding:0.65rem;border-radius:14px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.03);color:var(--text);box-shadow:var(--inset-shadow);font-size:0.95rem}
+input[type="color"]{padding:0.2rem;height:40px}
+input:focus, select:focus{outline:none;box-shadow:0 6px 24px rgba(255,122,0,0.12);border-color:var(--accent)}
+
+/* Buttons — pill style, premium feel */
+.btn{display:inline-flex;align-items:center;gap:0.6rem;padding:0.65rem 1rem;border-radius:999px;border:0;background:linear-gradient(180deg,var(--accent),#e76700);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(255,122,0,0.12);transition:transform .12s ease,box-shadow .16s ease}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(255,122,0,0.18)}
+.btn:active{transform:translateY(0)}
+.btn.secondary{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.035);color:var(--text);font-weight:700;padding:0.55rem 0.85rem}
+
+/* Lists — task items are large cards */
+.list{margin-top:0.75rem;display:flex;flex-direction:column;gap:0.6rem}
+.item{display:flex;align-items:center;gap:0.85rem;padding:0.85rem;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+.item .meta{flex:1}
+.item:hover{transform:translateY(-4px)}
+
+/* Subject chip — pill-style color */
+.subject-chip{width:auto;padding:0.25rem 0.6rem;border-radius:999px;display:inline-block;font-weight:800;font-size:0.82rem;line-height:1;color:#0a0a0a}
+.subject-name{font-weight:800;font-size:0.98rem}
+
+/* Task item styles */
+.task-title{font-size:1.02rem;margin:0;font-weight:800;color:var(--text)}
+.task-sub{font-size:0.82rem;color:var(--muted);margin-top:0.18rem}
+.task-completed{opacity:0.42;color:var(--muted);text-decoration:none}
+.task-deadline{font-size:0.82rem;color:var(--muted)}
+.task-urgent{box-shadow:inset 6px 0 0 rgba(255,122,0,0.08);padding-left:0.6rem}
+
+/* Schedule grid — card-based week view (mobile first stacked) */
+.schedule-grid{display:grid;grid-template-columns:repeat(1,1fr);gap:0.75rem}
+.day-column{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:0.7rem;border-radius:12px;min-height:90px;border:1px solid rgba(255,255,255,0.02)}
+.day-column h3{margin:0 0 0.3rem 0;font-size:0.88rem;color:var(--muted);font-weight:700}
+.day-column .small{margin-top:4px;color:var(--muted)}
+.day-tasks{display:flex;flex-direction:column;gap:0.55rem}
+.day-task{display:flex;align-items:center;gap:0.6rem;padding:0.6rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.018);font-size:0.92rem;box-shadow:0 8px 20px rgba(0,0,0,0.55)}
+.day-task .subject-pill{display:inline-block;padding:0.22rem 0.6rem;border-radius:999px;font-weight:800;font-size:0.78rem;color:#0b0b0b}
+.day-task .task-info{flex:1;display:flex;flex-direction:column}
+.day-task .task-title{font-weight:700;color:var(--text);font-size:0.95rem}
+.day-task .task-meta{color:var(--muted);margin-top:0.15rem}
+.day-task.completed{opacity:0.42;filter:grayscale(60%)}
+.day-task:hover{transform:translateY(-2px)}
+.day-empty{padding:0.45rem;border-radius:10px;background:transparent;color:var(--muted);text-align:center}
+
+/* Week navigation */
+.schedule-nav{display:flex;gap:0.6rem;align-items:center;margin:0.6rem 0 0.75rem}
+.schedule-nav .btn.secondary{padding:0.45rem 0.7rem;border-radius:12px}
+.schedule-nav .btn{padding:0.5rem 0.9rem;border-radius:999px}
+#week-range{font-weight:700;color:var(--text)}
+/* highlight the panel when it displays the current week */
+#schedule-section.is-current-week{box-shadow:0 14px 36px rgba(255,122,0,0.06);border-color:rgba(255,122,0,0.06)}
+
+
+/* Small screens (mobile-first) */
+@media (max-width: 700px){
+  .summary{grid-template-columns:1fr}
+  .header-inner{padding:0.6rem}
+  .container{max-width:680px}
+}
+
+/* Medium+ screens */
+@media (min-width:701px){
+  main#main-content .container{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start}
+  /* arrange sections for a mobile-app-like column + sidebar */
+  #subjects-section{order:2}
+  .schedule-grid{grid-template-columns:1fr}
+}
+
+/* Desktop layout: wider screens — show schedule days horizontally */
+@media (min-width:1000px){
+  main#main-content .container{grid-template-columns:1fr 360px}
+  .summary{grid-template-columns:repeat(3,1fr)}
+  .schedule-grid{grid-template-columns:repeat(7,1fr)}
+}
+
+/* Micro-interactions */
+.btn, .item, .day-task{transition:transform .14s ease,box-shadow .18s ease,opacity .12s ease}
+
+/* Accessibility focus */
+:focus{outline:none}
+:focus-visible{outline:3px solid rgba(255,122,0,0.12);border-radius:12px}
+
+/* Utilities */
+.small{font-size:0.82rem;color:var(--muted)}
+.center{display:flex;align-items:center;justify-content:center}
+
+/* Design notes:
+ - Single fixed dark style (no theme toggle in UI)
+ - Orange accent: var(--accent)
+ - Mobile-app inspired spacing, rounded cards, and pill buttons
+*/
